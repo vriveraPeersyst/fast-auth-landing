@@ -84,7 +84,7 @@ export default function PhoneHero() {
       <div className="floatBadge floatBadge--bottom">
         <div className="fbStat">
           <span className="fbStatLabel">Avg. sign-in</span>
-          <span className="fbStatValue">3.2s</span>
+          <span className="fbStatValue">5.7s</span>
         </div>
       </div>
     </div>

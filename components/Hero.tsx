@@ -14,15 +14,14 @@ const COMPACT_MILLIONS = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
 
-// Marketing kicker: round UP to the nearest million so the headline number
-// stays a clean "10M+", "12M+", etc. The trailing "+" already implies "at
-// least", so this is consistent with displaying real metrics.
+// Marketing kicker: floor to the nearest million so the trailing "+" stays
+// truthful — e.g. 10.7M displays as "10M+" (at least 10M), not "11M+".
 function buildAccountsLabel(total: number | null | undefined): string {
   if (typeof total !== "number" || !Number.isFinite(total) || total <= 0) {
     return "10M+ ACCOUNTS";
   }
-  const roundedUp = Math.max(10_000_000, Math.ceil(total / 1_000_000) * 1_000_000);
-  return `${COMPACT_MILLIONS.format(roundedUp)}+ ACCOUNTS`;
+  const rounded = Math.max(10_000_000, Math.floor(total / 1_000_000) * 1_000_000);
+  return `${COMPACT_MILLIONS.format(rounded)}+ ACCOUNTS`;
 }
 
 export default function Hero({ docsHref, statusHref, auditHref, metrics }: Props) {
