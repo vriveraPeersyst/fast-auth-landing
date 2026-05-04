@@ -1,6 +1,6 @@
-type Props = { docsHref: string; statusHref: string };
+type Props = { docsHref: string; statusHref: string; auditHref: string };
 
-export default function SiteFooter({ docsHref, statusHref }: Props) {
+export default function SiteFooter({ docsHref, statusHref, auditHref }: Props) {
   return (
     <footer className="siteFooter">
       <div className="container">
@@ -24,10 +24,18 @@ export default function SiteFooter({ docsHref, statusHref }: Props) {
           <div className="footerCol">
             <h4>Resources</h4>
             <ul>
-              <li><a href="#">GitHub</a></li>
-              <li><a href="#">Changelog</a></li>
+              <li>
+                <a href="https://github.com/Peersyst/fast-auth" target="_blank" rel="noopener">
+                  GitHub
+                </a>
+              </li>
+              <li>
+                <a href={auditHref} target="_blank" rel="noopener">
+                  Halborn audit
+                </a>
+              </li>
               <li><a href="#">Self-hosting</a></li>
-              <li><a href="#">Security</a></li>
+              <li><a href="#">Changelog</a></li>
             </ul>
           </div>
           <div className="footerCol">

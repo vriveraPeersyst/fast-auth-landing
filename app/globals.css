@@ -413,6 +413,81 @@ h2.sectionTitle {
   align-items: center;
 }
 
+/* ========== AUDIT BANNER ========== */
+.auditBanner {
+  background: var(--color-ink);
+  color: #fff;
+  border-top: 1px solid var(--color-border);
+}
+.auditBanner > .container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 32px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+@media (max-width: 720px) {
+  .auditBanner > .container { grid-template-columns: 1fr; gap: 16px; }
+}
+.auditBanner .badge {
+  width: 56px; height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--color-mint);
+  color: var(--color-ink);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.auditBanner .badge svg { width: 28px; height: 28px; }
+.auditBanner .copy { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.auditBanner .kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+.auditBanner .title {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+.auditBanner .title b { color: var(--color-mint); font-weight: 700; }
+.auditBanner .cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid rgba(255,255,255,0.16);
+  transition: background 120ms ease, border-color 120ms ease;
+  white-space: nowrap;
+}
+.auditBanner .cta:hover { background: rgba(0,242,155,0.12); border-color: var(--color-mint); }
+.auditBanner .cta svg { width: 14px; height: 14px; }
+
+.heroMeta .auditPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-radius: var(--radius-pill);
+  color: var(--color-ink);
+  text-transform: uppercase;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.heroMeta .auditPill:hover { border-color: var(--color-ink); background: var(--color-canvas); }
+.heroMeta .auditPill b { color: var(--color-ink); font-weight: 600; }
+.heroMeta .auditPill svg { color: var(--color-status-ok); }
+
 /* ========== HOW IT WORKS ========== */
 .how { padding: 96px 0; border-top: 1px solid var(--color-border); background: var(--color-surface-muted); }
 .stepsGrid {

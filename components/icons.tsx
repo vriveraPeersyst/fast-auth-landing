@@ -36,6 +36,15 @@ export function CheckIcon() {
   );
 }
 
+export function ShieldIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6" style={{ width: 13, height: 13 }}>
+      <path d="M8 1.5L2.5 3.5V8c0 3 2.4 5.5 5.5 6.5 3.1-1 5.5-3.5 5.5-6.5V3.5L8 1.5z" />
+      <path d="M5.5 8l1.8 1.8L10.5 6.5" />
+    </svg>
+  );
+}
+
 export function PlusIcon() {
   return (
     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2">

@@ -14,7 +14,7 @@ const ITEMS = [
   },
   {
     q: "What does Auth0 have to do with it?",
-    a: "Auth0 is the identity layer. Because every FastAuth-integrated dApp on NEAR shares the same Auth0 tenant, a user who already has a NEAR account through one dApp can sign into yours with the same login and reach the same wallet. That shared pool is currently 9M+ accounts.",
+    a: "Auth0 is the identity layer. Because every FastAuth-integrated dApp on NEAR shares the same Auth0 tenant, a user who already has a NEAR account through one dApp can sign into yours with the same login and reach the same wallet. That shared pool is currently 10M+ accounts.",
   },
   {
     q: "Where is the user's key stored?",
@@ -31,6 +31,10 @@ const ITEMS = [
   {
     q: "Can I self-host?",
     a: "Yes. The relayer, recovery service, and account-creation contract are all open source (MIT). Self-hosting docs are at docs.fastauth.near.org/self-host.",
+  },
+  {
+    q: "Has FastAuth been audited?",
+    a: "Yes. The FastAuth smart contracts and signing infrastructure have been audited by Halborn, an independent security firm specializing in Web3. The full security report is publicly available.",
   },
   {
     q: "Which sign-in methods are supported?",

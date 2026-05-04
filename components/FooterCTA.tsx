@@ -10,7 +10,7 @@ export default function FooterCTA({ docsHref, statusHref }: Props) {
           Ship the wallet your users<br />won't realize they're using.
         </h2>
         <p>
-          Five minutes from clone to first signed transaction. Plug into 9M+ accounts already on NEAR through one shared, Auth0-backed identity.
+          Five minutes from clone to first signed transaction. Plug into 10M+ accounts already on NEAR through one shared, Auth0-backed identity.
         </p>
         <div className="footerCTAButtons">
           <a href={docsHref} className="btn btn--primary">

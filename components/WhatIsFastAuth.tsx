@@ -8,7 +8,7 @@ export default function WhatIsFastAuth() {
             <h2 className="sectionTitle">A wallet that doesn't feel like one.</h2>
           </div>
           <p className="sectionLede">
-            FastAuth is an account-abstraction layer for NEAR, powered by Auth0. Users sign in with the credentials they already have, and the same identity unlocks every dApp and wallet in the ecosystem that integrates FastAuth — over 9 million accounts and counting.
+            FastAuth is an account-abstraction layer for NEAR, powered by Auth0. Users sign in with the credentials they already have, and the same identity unlocks every dApp and wallet in the ecosystem that integrates FastAuth — over 10 million accounts and counting.
           </p>
         </div>
 

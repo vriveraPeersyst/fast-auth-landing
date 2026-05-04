@@ -1,23 +1,32 @@
 import type { LiveMetrics } from "@/lib/metrics";
-import { ArrowRight } from "./icons";
+import { ArrowRight, ShieldIcon } from "./icons";
 import PhoneHero from "./PhoneHero";
 
 type Props = {
   docsHref: string;
   statusHref: string;
+  auditHref: string;
   metrics: LiveMetrics | null;
 };
 
-const COMPACT = new Intl.NumberFormat("en-US", {
+const COMPACT_MILLIONS = new Intl.NumberFormat("en-US", {
   notation: "compact",
-  maximumFractionDigits: 2,
+  maximumFractionDigits: 0,
 });
 
-export default function Hero({ docsHref, statusHref, metrics }: Props) {
-  const accountsLabel =
-    metrics && Number.isFinite(metrics.accounts.total) && metrics.accounts.total > 0
-      ? `${COMPACT.format(metrics.accounts.total)}+ ACCOUNTS`
-      : "9M+ ACCOUNTS";
+// Marketing kicker: round UP to the nearest million so the headline number
+// stays a clean "10M+", "12M+", etc. The trailing "+" already implies "at
+// least", so this is consistent with displaying real metrics.
+function buildAccountsLabel(total: number | null | undefined): string {
+  if (typeof total !== "number" || !Number.isFinite(total) || total <= 0) {
+    return "10M+ ACCOUNTS";
+  }
+  const roundedUp = Math.max(10_000_000, Math.ceil(total / 1_000_000) * 1_000_000);
+  return `${COMPACT_MILLIONS.format(roundedUp)}+ ACCOUNTS`;
+}
+
+export default function Hero({ docsHref, statusHref, auditHref, metrics }: Props) {
+  const accountsLabel = buildAccountsLabel(metrics?.accounts.total);
 
   return (
     <section className="hero">
@@ -50,7 +59,9 @@ export default function Hero({ docsHref, statusHref, metrics }: Props) {
           <div className="heroMeta">
             <span><span className="check">✓</span> Email · Social · Passkey · SSO</span>
             <span><span className="check">✓</span> Shared identity across NEAR</span>
-            <span><span className="check">✓</span> Open source · MIT</span>
+            <a href={auditHref} target="_blank" rel="noopener" className="auditPill">
+              <ShieldIcon /> Audited by <b>Halborn</b> · view report
+            </a>
           </div>
         </div>
 
