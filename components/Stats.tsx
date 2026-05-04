@@ -41,13 +41,13 @@ export default function Stats({ metrics, statusHref }: Props) {
 
           <article className="statCard">
             <h3>Active (24h)</h3>
-            <p className="v">{formatNumber(metrics?.accounts.active24h)}</p>
+            <p className="v">{formatNumber(metrics?.accounts.active30d)}</p>
             <span className="delta">{formatWeeklyContext(metrics?.accounts.active7d)}</span>
           </article>
 
           <article className="statCard">
             <h3>Sign events (7d)</h3>
-            <p className="v">{formatNumber(metrics?.signEvents.last7d)}</p>
+            <p className="v">{formatNumber(metrics?.signEvents.last30d)}</p>
             <span className="delta">{formatRelayers(metrics?.relayers.total)}</span>
           </article>
 
