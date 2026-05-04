@@ -8,40 +8,66 @@ export default function HowItWorks() {
             <h2 className="sectionTitle">Three steps. No seed phrases. Any login.</h2>
           </div>
           <p className="sectionLede">
-            What the user sees, and what's happening on chain. The dance between the device, the relayer, and NEAR happens in less than three seconds.
+            What the user sees, and what's happening on chain. From login to confirmed transaction in under three seconds — without the user ever holding a key.
           </p>
         </div>
 
         <div className="stepsGrid">
           <article className="stepCard">
             <div className="stepNum"><b>STEP 01</b> Authenticate</div>
-            <h3>User signs in with their preferred method.</h3>
-            <p>Any Auth0 method — email/password, passwordless, passkey, social, or enterprise SSO — all routed through Auth0. FastAuth verifies the identity and resolves it to the user's NEAR account, even if it was first created on a different dApp.</p>
+            <h3>User signs in. Auth0 issues a JWT.</h3>
+            <p>
+              The user logs in with email/password, passwordless, a passkey, social (Google, Apple,
+              custom OAuth2), or enterprise SSO. Auth0 returns a JWT whose <code>sub</code> claim
+              uniquely identifies them. Every transaction reuses this login — a fresh JWT is issued
+              for each one, with the action embedded in the payload.
+            </p>
             <div className="stepVis">
-              <span style={{ color: "var(--color-ink-subtle)" }}>→ POST /auth/login</span>
+              <span style={{ color: "var(--color-ink-subtle)" }}>→ POST /authorize</span>
               <span>
-                <span style={{ color: "var(--color-status-ok)" }}>200</span> · token verified ·{" "}
-                <span style={{ color: "var(--color-ink-subtle)" }}>43ms</span>
+                <span style={{ color: "var(--color-status-ok)" }}>200</span> · jwt issued ·{" "}
+                <span style={{ color: "var(--color-ink-subtle)" }}>sub=google-oauth2|…</span>
               </span>
             </div>
           </article>
+
           <article className="stepCard">
-            <div className="stepNum"><b>STEP 02</b> Provision</div>
-            <h3>An MPC key is split across three holders.</h3>
-            <p>One share lives on the device, one with our recovery service, one in the network. The full key never exists in one place — not even momentarily.</p>
+            <div className="stepNum"><b>STEP 02</b> Derive &amp; sign</div>
+            <h3>The MPC network derives the user's key from their JWT.</h3>
+            <p>
+              The FastAuth contract routes the JWT to the matching guard (Auth0, Firebase, custom
+              issuer) for cryptographic verification. On success it builds a deterministic path —{" "}
+              <code>{"{guard_id}#{sub}"}</code> — and asks NEAR's MPC network to sign for it. The
+              nodes derive the same key for the same identity every time, and produce the
+              signature collaboratively. No single party ever holds the full key — and the user
+              holds no key material at all.
+            </p>
             <div className="stepVis">
-              <span><span style={{ color: "var(--color-ink-subtle)" }}>device</span>   <span style={{ color: "var(--color-status-ok)" }}>✓</span></span>
-              <span><span style={{ color: "var(--color-ink-subtle)" }}>recovery</span> <span style={{ color: "var(--color-status-ok)" }}>✓</span></span>
-              <span><span style={{ color: "var(--color-ink-subtle)" }}>network</span>  <span style={{ color: "var(--color-status-ok)" }}>✓</span></span>
+              <span>
+                <span style={{ color: "var(--color-ink-subtle)" }}>guard.verify(jwt)</span>{" "}
+                <span style={{ color: "var(--color-status-ok)" }}>✓</span>
+              </span>
+              <span style={{ color: "var(--color-ink-subtle)" }}>path jwt#auth0#… → v1.signer</span>
+              <span>
+                <span style={{ color: "var(--color-status-ok)" }}>signed</span> ·{" "}
+                <span style={{ color: "var(--color-ink-subtle)" }}>eddsa</span>
+              </span>
             </div>
           </article>
+
           <article className="stepCard">
             <div className="stepNum"><b>STEP 03</b> Transact</div>
             <h3>Gasless meta-transactions land on chain.</h3>
-            <p>Users approve with their chosen method. The relayer wraps the signed action as a meta-transaction and pays gas. The call lands on NEAR mainnet in {"<"} 3s.</p>
+            <p>
+              The MPC signature wraps the user's action as a NEP-366 DelegateAction. Your dApp's
+              relayer pays gas, the action is bound to the JWT's payload (so it can't be
+              re-used), and the call lands on NEAR mainnet — typically in {"<"} 3s.
+            </p>
             <div className="stepVis">
-              <span style={{ color: "var(--color-ink-subtle)" }}>tx → relayer</span>
-              <span><span style={{ color: "var(--color-status-ok)" }}>included</span> · block 210,481,902</span>
+              <span style={{ color: "var(--color-ink-subtle)" }}>delegate action → relayer</span>
+              <span>
+                <span style={{ color: "var(--color-status-ok)" }}>included</span> · block 210,481,902
+              </span>
             </div>
           </article>
         </div>

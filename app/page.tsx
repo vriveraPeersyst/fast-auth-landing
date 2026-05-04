@@ -11,7 +11,7 @@ import WhatIsFastAuth from "@/components/WhatIsFastAuth";
 import { fetchLiveMetrics } from "@/lib/metrics";
 
 const DOCS_HREF = "https://peersyst.github.io/fast-auth/";
-const STATUS_HREF = "https://fast-auth-metrics-dashboard.vercel.app/";
+const STATUS_HREF = "/status";
 const AUDIT_HREF =
   "https://peersyst-public-production.s3.eu-west-1.amazonaws.com/FastAuth_Halborn.pdf";
 

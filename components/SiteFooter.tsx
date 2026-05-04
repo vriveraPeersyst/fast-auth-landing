@@ -16,9 +16,8 @@ export default function SiteFooter({ docsHref, statusHref, auditHref }: Props) {
             <h4>Product</h4>
             <ul>
               <li><a href={docsHref}>Documentation</a></li>
-              <li><a href="#developers">SDK</a></li>
+              <li><a href="https://peersyst.github.io/fast-auth/docs/guides/select-your-sdk" target="_blank" rel="noopener">SDK</a></li>
               <li><a href={statusHref}>Status</a></li>
-              <li><a href="#stats">Metrics</a></li>
             </ul>
           </div>
           <div className="footerCol">
@@ -34,17 +33,25 @@ export default function SiteFooter({ docsHref, statusHref, auditHref }: Props) {
                   Halborn audit
                 </a>
               </li>
-              <li><a href="#">Self-hosting</a></li>
+              <li>
+                <a
+                  href="https://peersyst.github.io/fast-auth/docs/concepts/architecture_custom_issuer_service"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Custom Issuer
+                </a>
+              </li>
               <li><a href="#">Changelog</a></li>
             </ul>
           </div>
           <div className="footerCol">
             <h4>Company</h4>
             <ul>
-              <li><a href="#">Peersyst</a></li>
-              <li><a href="#">NEAR Protocol</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Twitter / X</a></li>
+              <li><a href="https://peersyst.com/" target="_blank" rel="noopener">Peersyst</a></li>
+              <li><a href="https://www.near.org/" target="_blank" rel="noopener">NEAR Protocol</a></li>
+              <li><a href="https://discord.gg/JZfwEt82ur" target="_blank" rel="noopener">Contact</a></li>
+              <li><a href="https://x.com/NEARProtocol" target="_blank" rel="noopener">Twitter / X</a></li>
             </ul>
           </div>
         </div>

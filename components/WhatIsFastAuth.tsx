@@ -45,15 +45,15 @@ export default function WhatIsFastAuth() {
 
 function ValueIllu1() {
   return (
-    <svg viewBox="0 0 240 60" width="100%" height={60} fill="none">
-      <rect x="0" y="20" width="80" height="20" rx="10" fill="#F5F4ED" stroke="#EBEBEB" />
-      <text x="40" y="34" textAnchor="middle" fontFamily="SF Mono, monospace" fontSize="10" fill="#757571">user@email.com</text>
-      <path d="M84 30 H120" stroke="#000" strokeDasharray="2 3" />
-      <rect x="120" y="20" width="40" height="20" rx="6" fill="#000" />
-      <text x="140" y="34" textAnchor="middle" fontFamily="SF Mono, monospace" fontSize="9" fontWeight="600" fill="#00F29B">FA</text>
-      <path d="M164 30 H200" stroke="#000" strokeDasharray="2 3" />
-      <rect x="200" y="20" width="40" height="20" rx="6" fill="#00F29B" />
-      <text x="220" y="34" textAnchor="middle" fontFamily="SF Mono, monospace" fontSize="9" fontWeight="600" fill="#000">.near</text>
+    <svg viewBox="0 0 264 60" width="100%" height={60} fill="none">
+      <rect x="0" y="18" width="104" height="24" rx="12" fill="#F5F4ED" stroke="#EBEBEB" />
+      <text x="52" y="34" textAnchor="middle" fontFamily="SF Mono, monospace" fontSize="10" fill="#757571">user@email.com</text>
+      <path d="M108 30 H144" stroke="#000" strokeDasharray="2 3" />
+      <rect x="144" y="20" width="40" height="20" rx="6" fill="#000" />
+      <text x="164" y="34" textAnchor="middle" fontFamily="SF Mono, monospace" fontSize="9" fontWeight="600" fill="#00F29B">FA</text>
+      <path d="M188 30 H224" stroke="#000" strokeDasharray="2 3" />
+      <rect x="224" y="20" width="40" height="20" rx="6" fill="#00F29B" />
+      <text x="244" y="34" textAnchor="middle" fontFamily="SF Mono, monospace" fontSize="9" fontWeight="600" fill="#000">.near</text>
     </svg>
   );
 }
