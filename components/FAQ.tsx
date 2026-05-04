@@ -14,23 +14,23 @@ const ITEMS = [
   },
   {
     q: "What does Auth0 have to do with it?",
-    a: "Auth0 is the identity layer. Because every FastAuth-integrated dApp on NEAR shares the same Auth0 tenant, a user who already has a NEAR account through one dApp can sign into yours with the same login and reach the same wallet. That shared pool is currently 10M+ accounts.",
+    a: "Auth0 is the identity layer. Because every FastAuth-integrated dApp on NEAR shares the same Auth0 tenant, a user who already has a NEAR account through one dApp can sign into yours with the same login and reach the same wallet.",
   },
   {
     q: "Where is the user's key stored?",
-    a: "Keys are split using threshold-MPC into three shares: one on the user's device, one held by a recovery service, one in the network. Two of three are required to sign — the full key is never reconstructed in plain memory.",
+    a: "User signs in. Auth0 issues a JWT. The MPC network derives the user's key from their JWT. The FastAuth contract routes the JWT to the matching guard (Auth0, Firebase, custom issuer) for cryptographic verification. On success it builds a deterministic path — {guard_id}#{sub} — and asks NEAR's MPC network to sign for it. The nodes derive the same key for the same identity every time, and produce the signature collaboratively. No single party ever holds the full key — and the user holds no key material at all.",
   },
   {
     q: "Is this custodial?",
-    a: "No. The user can export their account at any time and migrate to any standard NEAR wallet. We can't sign on their behalf without their device share.",
+    a: "No single party holds the user's signing key. The key is derived inside NEAR's MPC network from the user's Auth0-verified identity each time a signature is needed — no node ever reconstructs the full key. The gating credential is the user's Auth0 login: every transaction requires a fresh, verified JWT, and FastAuth cannot sign without it.",
   },
   {
     q: "How is gas paid?",
-    a: "Through a meta-transaction relayer. Your dApp deposits NEAR into a relayer account; the relayer wraps user-signed actions and pays gas. You set spend caps, per-method allowlists, and rate limits in the dashboard.",
+    a: "Through the FastAuth relayer. When your dApp calls signAndSendDelegateAction, the relayer wraps the user's signed delegate action as a NEP-366 meta-transaction, pays gas on chain, and returns the result — the user pays nothing. The relayer URL is configured per-network in the SDK. For a regular (non-delegate) transaction, the user's account pays gas directly.",
   },
   {
     q: "Can I self-host?",
-    a: "Yes. The relayer, recovery service, and account-creation contract are all open source (MIT). Self-hosting docs are at docs.fastauth.near.org/self-host.",
+    a: "Partially. The FastAuth contract, the JWT Guard Router, and NEAR's MPC network are shared infrastructure deployed on mainnet (fast-auth.near, jwt.fast-auth.near, v1.signer) — you integrate with them, you don't redeploy them. You can self-host the auth side: deploy your own guard contract that implements the JwtGuard trait, or run an off-chain issuer whose JWTs are verified by CustomIssuerGuard. Both extension points are documented.",
   },
   {
     q: "Has FastAuth been audited?",
@@ -38,7 +38,7 @@ const ITEMS = [
   },
   {
     q: "Which sign-in methods are supported?",
-    a: "Everything FastAuth inherits from Auth0: database (email/password), passwordless (email magic-link or SMS), passkeys, social login (Google, Apple, or custom OAuth2), and enterprise SSO via SAML, OIDC, LDAP, ADFS, Azure AD, Google Workspace, Okta, or PingFederate — with MFA factors layerable on top of any of them. All routed through Auth0, so the same identity resolves to the same NEAR account across every FastAuth-integrated dApp.",
+    a: "Four, all routed through Auth0: Google, Apple, email/password, and passkeys. Because every FastAuth-integrated dApp shares the same Auth0 tenant, the same login resolves to the same NEAR account everywhere. For providers Auth0 doesn't cover, you can deploy a custom guard contract or run a custom issuer service that issues JWTs verified on chain.",
   },
 ];
 
