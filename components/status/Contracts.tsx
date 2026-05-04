@@ -1,4 +1,5 @@
 import type { StatusData } from "@/lib/status";
+import NearblocksLink from "./NearblocksLink";
 import SectionLabel from "./SectionLabel";
 import {
   fmtAbsolute,
@@ -44,7 +45,9 @@ export default function Contracts({ data }: { data: StatusData }) {
                         <span className="statusDot statusDot--ok" />
                         {c.kind}
                       </span>
-                      <code>{c.id}</code>
+                      <NearblocksLink kind="account" value={c.id}>
+                        <code>{c.id}</code>
+                      </NearblocksLink>
                     </div>
                   </td>
                   <td style={{ textAlign: "right" }}>
@@ -58,7 +61,13 @@ export default function Contracts({ data }: { data: StatusData }) {
                   </td>
                   <td>{c.version ?? "—"}</td>
                   <td>
-                    <code className="ownerCode">{c.owner ?? "—"}</code>
+                    {c.owner ? (
+                      <NearblocksLink kind="account" value={c.owner}>
+                        <code className="ownerCode">{c.owner}</code>
+                      </NearblocksLink>
+                    ) : (
+                      <code className="ownerCode">—</code>
+                    )}
                   </td>
                   <td title={fmtAbsolute(c.snapshotAt)}>{relativeTime(c.snapshotAt)}</td>
                 </tr>

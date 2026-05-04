@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { StatusData } from "@/lib/status";
+import NearblocksLink from "./NearblocksLink";
 import Pagination from "./Pagination";
 import SectionLabel from "./SectionLabel";
 import { fmtN, shortAccount } from "./format";
@@ -40,7 +41,9 @@ export default function TopAccounts({ data }: { data: StatusData }) {
                 <tr key={a.accountId}>
                   <td className="rank">{start + i + 1}</td>
                   <td>
-                    <code title={a.accountId}>{shortAccount(a.accountId)}</code>
+                    <NearblocksLink kind="account" value={a.accountId}>
+                      <code>{shortAccount(a.accountId)}</code>
+                    </NearblocksLink>
                   </td>
                   <td style={{ textAlign: "right" }}>{fmtN(a.calls24h)}</td>
                   <td style={{ textAlign: "right" }}>{fmtN(a.callsAll)}</td>

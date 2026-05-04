@@ -53,7 +53,11 @@ export default function ServiceHealth({ data }: { data: StatusData }) {
             ) : (
               <p className="healthFootnote">No FastAuth health snapshot yet.</p>
             )}
-            <UptimeBar data={data.uptime24h.map((p) => p.fastAuth)} label="Last 24h" />
+            <UptimeBar
+              data={data.uptime24h.map((p) => p.fastAuth)}
+              label="Last 24h"
+              anchor={data.generatedAt}
+            />
             <p className="healthFootnote">
               Last 24h of FastAuth txs, classified by walking each tx&apos;s receipts. Share whose full receipt chain
               (guard → MPC) executed cleanly. Pending tx are excluded from the denominator until classified.
@@ -91,7 +95,11 @@ export default function ServiceHealth({ data }: { data: StatusData }) {
             ) : (
               <p className="healthFootnote">No MPC health snapshot yet.</p>
             )}
-            <UptimeBar data={data.uptime24h.map((p) => p.mpc)} label="Last 24h" />
+            <UptimeBar
+              data={data.uptime24h.map((p) => p.mpc)}
+              label="Last 24h"
+              anchor={data.generatedAt}
+            />
             <p className="healthFootnote">
               Success rate of MPC signing receipts. Excludes guard-side rejections to isolate MPC network health.
               Pending tx are excluded from the denominator until classified.

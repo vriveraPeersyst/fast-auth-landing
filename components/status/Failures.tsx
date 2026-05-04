@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { StatusData } from "@/lib/status";
+import NearblocksLink from "./NearblocksLink";
 import Pagination from "./Pagination";
 import SectionLabel from "./SectionLabel";
 import { fmtAbsolute, relativeTime, shortHash } from "./format";
@@ -48,11 +49,19 @@ export default function Failures({ data }: { data: StatusData }) {
                 {KIND_LABEL[f.kind] || f.kind}
               </span>
               <span className="failureExecutor">
-                <code>{f.executor}</code>
+                {f.executor && f.executor !== "—" ? (
+                  <NearblocksLink kind="account" value={f.executor}>
+                    <code>{f.executor}</code>
+                  </NearblocksLink>
+                ) : (
+                  <code>—</code>
+                )}
               </span>
               <span className="failureReason">{f.reason}</span>
               <span className="failureTx">
-                <code title={f.txHash}>{shortHash(f.txHash, 6, 4)}</code>
+                <NearblocksLink kind="tx" value={f.txHash}>
+                  <code>{shortHash(f.txHash, 6, 4)}</code>
+                </NearblocksLink>
               </span>
             </div>
           ))}

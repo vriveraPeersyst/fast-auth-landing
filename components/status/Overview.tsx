@@ -63,15 +63,14 @@ export default function Overview({ data }: { data: StatusData }) {
                 Volume per window · {fmtN(t.failed.last24h)} failed · 24h
               </span>
             </div>
-            <div className="kpiTileRow">
-              <KPI label="Signed · 24h" value={fmtN(t.signed.last24h)} />
+            <div className="kpiTileRow kpiTileRow--two">
+              <KPI label="Total signed" value={fmtN(t.signed.all)} hint="All time" />
               <KPI
-                label="Failed · 24h"
-                value={fmtN(t.failed.last24h)}
-                tone={t.failed.last24h > 0 ? "warn" : undefined}
+                label="Total failed"
+                value={fmtN(t.failed.all)}
+                hint="All time"
+                tone={t.failed.all > 0 ? "warn" : undefined}
               />
-              <KPI label="Total · 7d" value={fmtN(t.total.last7d)} />
-              <KPI label="Total · all" value={fmtN(t.total.all)} />
             </div>
             <div className="dashTable">
               <table>

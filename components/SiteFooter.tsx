@@ -42,7 +42,6 @@ export default function SiteFooter({ docsHref, statusHref, auditHref }: Props) {
                   Custom Issuer
                 </a>
               </li>
-              <li><a href="#">Changelog</a></li>
             </ul>
           </div>
           <div className="footerCol">

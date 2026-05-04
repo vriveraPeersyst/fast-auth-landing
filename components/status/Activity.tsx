@@ -35,9 +35,9 @@ export default function Activity({ data }: { data: StatusData }) {
         ) : null}
 
         <div className="kpiTileRow kpiTileRow--four">
-          <KPI label="Total txs · 24h" value={fmtN(a.rows[0]?.last24h ?? 0)} />
-          <KPI label="Succeeded · 24h" value={fmtN(a.rows[1]?.last24h ?? 0)} />
-          <KPI label="Success rate · 24h" value={fmtPct(a.successRate.last24h, 1)} hint="Pending excluded" />
+          <KPI label="Total txs · all" value={fmtN(a.rows[0]?.all ?? 0)} />
+          <KPI label="Succeeded · all" value={fmtN(a.rows[1]?.all ?? 0)} />
+          <KPI label="Success rate · all" value={fmtPct(a.successRate.all, 1)} hint="Pending excluded" />
           <KPI label="Active users · 24h" value={fmtN(a.rows[3]?.last24h ?? 0)} />
         </div>
 
