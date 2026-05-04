@@ -8,23 +8,23 @@ export default function WhatIsFastAuth() {
             <h2 className="sectionTitle">A wallet that doesn't feel like one.</h2>
           </div>
           <p className="sectionLede">
-            FastAuth is an account-abstraction layer for NEAR, powered by Auth0. Users sign in with the credentials they already have, and the same identity unlocks every dApp and wallet in the ecosystem that integrates FastAuth — over 10 million accounts and counting.
+            FastAuth is an account-abstraction layer for NEAR, powered by Auth0. Users sign in with the credentials they already have, and the same identity resolves to the same NEAR account in every dApp that integrates FastAuth.
           </p>
         </div>
 
         <div className="valueGrid">
           <article className="valueCard">
             <span className="vNum">01 · ONBOARDING</span>
-            <h3>Email, social, passkey, or enterprise SSO.</h3>
-            <p>Every Auth0 sign-in method is supported — email/password, passwordless, passkeys, social (Google, Apple, custom OAuth2), or enterprise SSO. We provision a real NEAR account in the background — no seed phrase, no extension, no wallet popup. Whatever the user already trusts, that's how they sign in.</p>
+            <h3>Email, Google, Apple, or passkey.</h3>
+            <p>Four sign-in methods, all routed through Auth0: Google, Apple, email/password, and passkeys. We provision a real NEAR account in the background — no seed phrase, no extension, no wallet popup. Whatever the user already trusts, that's how they sign in.</p>
             <div className="valueIllu">
               <ValueIllu1 />
             </div>
           </article>
           <article className="valueCard">
             <span className="vNum">02 · SHARED IDENTITY</span>
-            <h3>One account. The whole NEAR ecosystem.</h3>
-            <p>FastAuth is backed by Auth0, so a user who signs in to your dApp is the same user across every other wallet and dApp on NEAR that integrates FastAuth. Tap into the largest userbase on NEAR.</p>
+            <h3>One account. Every FastAuth dApp.</h3>
+            <p>The user's MPC-controlled NEAR account is derived deterministically from their Auth0 identity. Sign into one FastAuth-integrated dApp, sign into the next with the same login — same account, same balance, no re-onboarding.</p>
             <div className="valueIllu">
               <ValueIllu2 />
             </div>
@@ -32,7 +32,7 @@ export default function WhatIsFastAuth() {
           <article className="valueCard">
             <span className="vNum">03 · UX</span>
             <h3>Gasless. Silent. On-chain.</h3>
-            <p>Your dApp pays gas through the meta-transaction relayer. Users authenticate with whichever method they chose. Transactions land on NEAR mainnet in under three seconds.</p>
+            <p>Your dApp pays gas through the FastAuth relayer. Users authenticate with whichever Auth0 method they chose, and the action lands on NEAR mainnet wrapped as a NEP-366 meta-transaction.</p>
             <div className="valueIllu">
               <ValueIllu3 />
             </div>

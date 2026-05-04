@@ -138,11 +138,11 @@ function ApprovingScreen() {
         </div>
       </div>
       <h3 className="scTitle">Verifying passkey</h3>
-      <p className="scLede">Talking to the relayer. No transaction will be signed without your approval.</p>
+      <p className="scLede">Auth0 issues a JWT, the on-chain guard verifies it, MPC signs. No key ever touches your device.</p>
       <div className="approveLog">
-        <div className="alLine"><span className="ts">00:01</span> <span className="ok">✓</span> Passkey verified</div>
-        <div className="alLine"><span className="ts">00:01</span> <span className="ok">✓</span> Recovery share fetched</div>
-        <div className="alLine"><span className="ts">00:02</span> <span className="alDot" /> Reconstructing key…</div>
+        <div className="alLine"><span className="ts">00:01</span> <span className="ok">✓</span> Auth0 JWT issued</div>
+        <div className="alLine"><span className="ts">00:01</span> <span className="ok">✓</span> Guard verified on chain</div>
+        <div className="alLine"><span className="ts">00:02</span> <span className="alDot" /> MPC signing…</div>
       </div>
     </div>
   );

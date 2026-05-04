@@ -36,21 +36,25 @@ export default function Stats({ metrics, statusHref }: Props) {
           <article className="statCard">
             <h3>Total accounts</h3>
             <p className="v">{formatNumber(metrics?.accounts.total)}</p>
+            <span className="delta">{formatTodayDelta(metrics?.accounts.new24h)}</span>
           </article>
 
           <article className="statCard">
-            <h3>Active (30d)</h3>
-            <p className="v">{formatNumber(metrics?.accounts.active30d)}</p>
+            <h3>Active (24h)</h3>
+            <p className="v">{formatNumber(metrics?.accounts.active24h)}</p>
+            <span className="delta">{formatWeeklyContext(metrics?.accounts.active7d)}</span>
           </article>
 
           <article className="statCard">
-            <h3>Sign events (30d)</h3>
-            <p className="v">{formatNumber(metrics?.signEvents.last30d)}</p>
+            <h3>Sign events (7d)</h3>
+            <p className="v">{formatNumber(metrics?.signEvents.last7d)}</p>
+            <span className="delta">{formatRelayers(metrics?.relayers.total)}</span>
           </article>
 
           <article className="statCard statCard--mint">
             <h3>FastAuth uptime</h3>
             <p className="v">{formatUptime(metrics?.health24h.uptimePct ?? null)}</p>
+            <span className="delta">{formatUptimeWindow(metrics?.health24h.classified)}</span>
           </article>
         </div>
 
@@ -70,6 +74,28 @@ function formatNumber(value: number | undefined | null): string {
 function formatUptime(pct: number | null): string {
   if (pct === null) return "—";
   return `${pct.toFixed(1)}%`;
+}
+
+function formatTodayDelta(n: number | undefined | null): string {
+  if (typeof n !== "number" || !Number.isFinite(n)) return "today";
+  return `↑ ${NUMBER_FMT.format(n)} today`;
+}
+
+function formatWeeklyContext(n: number | undefined | null): string {
+  if (typeof n !== "number" || !Number.isFinite(n)) return "7d window";
+  return `${NUMBER_FMT.format(n)} active in 7d`;
+}
+
+function formatRelayers(n: number | undefined | null): string {
+  if (typeof n !== "number" || !Number.isFinite(n) || n <= 0) return "live network";
+  return `across ${NUMBER_FMT.format(n)} relayer${n === 1 ? "" : "s"}`;
+}
+
+function formatUptimeWindow(classified: number | undefined | null): string {
+  if (typeof classified !== "number" || !Number.isFinite(classified) || classified <= 0) {
+    return "last 24h";
+  }
+  return `${NUMBER_FMT.format(classified)} sigs · 24h`;
 }
 
 function useFreshnessLabel(iso: string | null): string {

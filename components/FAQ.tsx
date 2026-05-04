@@ -10,11 +10,11 @@ const ITEMS = [
   },
   {
     q: "How do users sign in?",
-    a: "With anything Auth0 supports — email/password, passwordless email or SMS, passkeys, social login (Google, Apple, or any OAuth2 provider you wire up), and enterprise SSO. MFA factors can be layered on top. All identities flow through Auth0, which means the same login resolves to the same NEAR account no matter which dApp the user signs into.",
+    a: "Through Auth0 — Google, Apple, email/password, or passkey. The user's MPC-controlled NEAR account is derived deterministically from their Auth0 identity, so the same login always resolves to the same account no matter which FastAuth dApp they sign into.",
   },
   {
     q: "What does Auth0 have to do with it?",
-    a: "Auth0 is the identity layer. Because every FastAuth-integrated dApp on NEAR shares the same Auth0 tenant, a user who already has a NEAR account through one dApp can sign into yours with the same login and reach the same wallet.",
+    a: "Auth0 is the identity layer. Each FastAuth-integrated dApp gets its own approved Auth0 credentials (domain, clientId, audience), but the user's `sub` claim deterministically derives the same MPC-controlled NEAR account across every dApp that uses the Auth0 guard — so the same login reaches the same wallet.",
   },
   {
     q: "Where is the user's key stored?",
@@ -29,6 +29,10 @@ const ITEMS = [
     a: "Through the FastAuth relayer. When your dApp calls signAndSendDelegateAction, the relayer wraps the user's signed delegate action as a NEP-366 meta-transaction, pays gas on chain, and returns the result — the user pays nothing. The relayer URL is configured per-network in the SDK. For a regular (non-delegate) transaction, the user's account pays gas directly.",
   },
   {
+    q: "How do I go live on mainnet?",
+    a: "Build on testnet first — no approval required, free credentials. When you're ready for production, submit your application (name, description, expected volume, use case, contact) to the FastAuth team. Once approved, you receive production Auth0 credentials (domain, clientId, audience) and access to the mainnet FastAuth contracts. Mainnet usage is whitelisted to keep the shared infrastructure healthy.",
+  },
+  {
     q: "Can I self-host?",
     a: "Partially. The FastAuth contract, the JWT Guard Router, and NEAR's MPC network are shared infrastructure deployed on mainnet (fast-auth.near, jwt.fast-auth.near, v1.signer) — you integrate with them, you don't redeploy them. You can self-host the auth side: deploy your own guard contract that implements the JwtGuard trait, or run an off-chain issuer whose JWTs are verified by CustomIssuerGuard. Both extension points are documented.",
   },
@@ -38,7 +42,7 @@ const ITEMS = [
   },
   {
     q: "Which sign-in methods are supported?",
-    a: "Four, all routed through Auth0: Google, Apple, email/password, and passkeys. Because every FastAuth-integrated dApp shares the same Auth0 tenant, the same login resolves to the same NEAR account everywhere. For providers Auth0 doesn't cover, you can deploy a custom guard contract or run a custom issuer service that issues JWTs verified on chain.",
+    a: "Four, all routed through Auth0: Google, Apple, email/password, and passkeys. Because the user's NEAR account is derived deterministically from their Auth0 `sub` claim, the same login resolves to the same account in every FastAuth dApp. For providers Auth0 doesn't cover, you can deploy a custom guard contract or run a custom issuer service that issues JWTs verified on chain.",
   },
 ];
 

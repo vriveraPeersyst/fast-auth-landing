@@ -10,16 +10,16 @@ const SNIPPETS: Record<Tab, string> = {
 import { JavascriptProvider } from "@fast-auth-near/javascript-provider";
 import { Connection } from "near-api-js";
 
-// Network is "mainnet" or "testnet" — the React SDK auto-configures the
-// MPC + FastAuth contract IDs from this single switch.
+// Start on testnet (no approval needed). Switch to "mainnet" once your
+// app has been whitelisted and approved Auth0 credentials issued.
 const connection = new Connection({
-  networkId: "mainnet",
-  provider: { type: "JsonRpcProvider", args: { url: "https://rpc.mainnet.near.org" } },
+  networkId: "testnet",
+  provider: { type: "JsonRpcProvider", args: { url: "https://rpc.testnet.near.org" } },
 });
 
 export default function App() {
   const providerConfig = {
-    // Auth0 tenant — Email · Google · Apple · Passkey are configured here.
+    // Auth0 tenant — Google · Apple · Email/password · Passkey live here.
     provider: new JavascriptProvider({
       domain:   "your-tenant.auth0.com",
       clientId: "YOUR_AUTH0_CLIENT_ID",
@@ -31,7 +31,7 @@ export default function App() {
     <FastAuthProvider
       providerConfig={providerConfig}
       connection={connection}
-      network="mainnet"
+      network="testnet"
     >
       <Wallet />
     </FastAuthProvider>
@@ -157,9 +157,9 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
               <li>
                 <span className="checkbox"><CheckIcon /></span>
                 <div>
-                  <strong>Open source. Self-hostable.</strong>
+                  <strong>Open source. Extend the auth side.</strong>
                   <span>
-                    MIT-licensed on GitHub. Run the entire stack on your own infrastructure if you'd rather not depend on ours.
+                    SDKs and contracts on GitHub. Run your own JWT guard or custom issuer service if Auth0 isn't enough — the FastAuth contract, router, and MPC network are shared mainnet infrastructure.
                   </span>
                 </div>
               </li>

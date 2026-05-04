@@ -8,7 +8,7 @@ export default function HowItWorks() {
             <h2 className="sectionTitle">Three steps. No seed phrases. Any login.</h2>
           </div>
           <p className="sectionLede">
-            What the user sees, and what's happening on chain. From login to confirmed transaction in under three seconds — without the user ever holding a key.
+            What the user sees, and what's happening on chain. From login to confirmed transaction — without the user ever holding a key.
           </p>
         </div>
 
@@ -17,10 +17,10 @@ export default function HowItWorks() {
             <div className="stepNum"><b>STEP 01</b> Authenticate</div>
             <h3>User signs in. Auth0 issues a JWT.</h3>
             <p>
-              The user logs in with email/password, passwordless, a passkey, social (Google, Apple,
-              custom OAuth2), or enterprise SSO. Auth0 returns a JWT whose <code>sub</code> claim
-              uniquely identifies them. Every transaction reuses this login — a fresh JWT is issued
-              for each one, with the action embedded in the payload.
+              The user logs in with email/password, a passkey, Google, or Apple. Auth0 returns a
+              JWT whose <code>sub</code> claim uniquely identifies them. Every transaction reuses
+              this login — a fresh JWT is issued for each one, with the action embedded in the
+              payload.
             </p>
             <div className="stepVis">
               <span style={{ color: "var(--color-ink-subtle)" }}>→ POST /authorize</span>
@@ -61,7 +61,7 @@ export default function HowItWorks() {
             <p>
               The MPC signature wraps the user's action as a NEP-366 DelegateAction. Your dApp's
               relayer pays gas, the action is bound to the JWT's payload (so it can't be
-              re-used), and the call lands on NEAR mainnet — typically in {"<"} 3s.
+              re-used), and the call lands on NEAR mainnet through the relayer.
             </p>
             <div className="stepVis">
               <span style={{ color: "var(--color-ink-subtle)" }}>delegate action → relayer</span>

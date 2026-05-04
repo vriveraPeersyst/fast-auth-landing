@@ -14,6 +14,8 @@ const DOCS_HREF = "https://peersyst.github.io/fast-auth/";
 const STATUS_HREF = "/status";
 const AUDIT_HREF =
   "https://peersyst-public-production.s3.eu-west-1.amazonaws.com/FastAuth_Halborn.pdf";
+const APPLY_HREF =
+  "https://peersyst.github.io/fast-auth/docs/guides/submit-your-application";
 
 export const revalidate = 60;
 
@@ -27,7 +29,6 @@ export default async function Page() {
         docsHref={DOCS_HREF}
         statusHref={STATUS_HREF}
         auditHref={AUDIT_HREF}
-        metrics={metrics}
       />
       <AuditBanner auditHref={AUDIT_HREF} />
       <WhatIsFastAuth />
@@ -35,7 +36,7 @@ export default async function Page() {
       <DeveloperSection docsHref={DOCS_HREF} />
       <Stats metrics={metrics} statusHref={STATUS_HREF} />
       <FAQ />
-      <FooterCTA docsHref={DOCS_HREF} statusHref={STATUS_HREF} />
+      <FooterCTA docsHref={DOCS_HREF} applyHref={APPLY_HREF} />
       <SiteFooter docsHref={DOCS_HREF} statusHref={STATUS_HREF} auditHref={AUDIT_HREF} />
     </>
   );

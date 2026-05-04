@@ -15,7 +15,7 @@ function resolveSiteUrl(): string {
 const SITE_URL = resolveSiteUrl();
 const SITE_TITLE = "FastAuth — Sign up with email. Own a real wallet.";
 const SITE_DESCRIPTION =
-  "FastAuth onboards users in seconds with any Auth0 method — email, social, passkey, or enterprise SSO — no seed phrases, no extensions, no wallet popups. One Auth0-backed identity, shared across every wallet and dApp in the NEAR ecosystem.";
+  "FastAuth onboards users in seconds via Auth0 — Google, Apple, email/password, or passkey — no seed phrases, no extensions, no wallet popups. A real NEAR account, derived from the user's identity through MPC.";
 const OG_IMAGE = "/fast-auth-img-og.png";
 const OG_IMAGE_ALT = "FastAuth — One login. Every dApp on NEAR.";
 

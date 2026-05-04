@@ -55,7 +55,7 @@ export default function SiteFooter({ docsHref, statusHref, auditHref }: Props) {
           </div>
         </div>
         <div className="footerBottom">
-          <span>© 2026 Peersyst Technology · MIT License</span>
+          <span>© 2026 Peersyst Technology</span>
           <span className="pill"><span className="pd" /> All systems operational</span>
         </div>
       </div>
