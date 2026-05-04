@@ -3,8 +3,14 @@
 import { useState } from "react";
 
 import type { StatusBreakdownRow, StatusData } from "@/lib/status";
+import NearblocksLink from "./NearblocksLink";
 import SectionLabel from "./SectionLabel";
 import { fmtAbsolute, fmtN, fmtPct } from "./format";
+
+// Tabs whose row labels are NEAR account IDs — those link to nearblocks.
+// methods (`ft_transfer`, `swap`, …) and providers (`google-oauth2`, …) are
+// not accounts, so they render as plain code.
+const ACCOUNT_TABS = new Set<BreakdownKey>(["receivers", "relayers", "guards"]);
 
 const TABS: { id: BreakdownKey | "overall"; label: string; col: string }[] = [
   { id: "overall", label: "Overall", col: "Metric" },
@@ -88,14 +94,26 @@ export default function Activity({ data }: { data: StatusData }) {
             </table>
           </div>
         ) : (
-          <BreakdownTable col={active.col} rows={a.breakdowns[tab as BreakdownKey]} />
+          <BreakdownTable
+            col={active.col}
+            rows={a.breakdowns[tab as BreakdownKey]}
+            linkAsAccount={ACCOUNT_TABS.has(tab as BreakdownKey)}
+          />
         )}
       </div>
     </section>
   );
 }
 
-function BreakdownTable({ col, rows }: { col: string; rows: StatusBreakdownRow[] }) {
+function BreakdownTable({
+  col,
+  rows,
+  linkAsAccount,
+}: {
+  col: string;
+  rows: StatusBreakdownRow[];
+  linkAsAccount: boolean;
+}) {
   if (!rows || rows.length === 0) {
     return (
       <div className="dashTable">
@@ -145,7 +163,13 @@ function BreakdownTable({ col, rows }: { col: string; rows: StatusBreakdownRow[]
             return (
               <tr key={r.label}>
                 <td>
-                  <code>{r.label}</code>
+                  {linkAsAccount ? (
+                    <NearblocksLink kind="account" value={r.label}>
+                      <code>{r.label}</code>
+                    </NearblocksLink>
+                  ) : (
+                    <code>{r.label}</code>
+                  )}
                 </td>
                 <td style={{ textAlign: "right" }}>{fmtN(r.txns)}</td>
                 {hasOutcome ? (
