@@ -16,7 +16,7 @@ const SITE_URL = resolveSiteUrl();
 const SITE_TITLE = "FastAuth — Sign up with email. Own a real wallet.";
 const SITE_DESCRIPTION =
   "FastAuth onboards users in seconds with any Auth0 method — email, social, passkey, or enterprise SSO — no seed phrases, no extensions, no wallet popups. One Auth0-backed identity, shared across every wallet and dApp in the NEAR ecosystem.";
-const OG_IMAGE = "/fast-auth-landing-og.png";
+const OG_IMAGE = "/fast-auth-img-og.png";
 const OG_IMAGE_ALT = "FastAuth — One login. Every dApp on NEAR.";
 
 export const metadata: Metadata = {
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: OG_IMAGE,
-        width: 2612,
-        height: 1490,
+        width: 1000,
+        height: 583,
         alt: OG_IMAGE_ALT,
         type: "image/png",
       },
