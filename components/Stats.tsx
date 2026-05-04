@@ -39,13 +39,13 @@ export default function Stats({ metrics, statusHref }: Props) {
           </article>
 
           <article className="statCard">
-            <h3>Active (24h)</h3>
-            <p className="v">{formatNumber(metrics?.accounts.active24h)}</p>
+            <h3>Active (30d)</h3>
+            <p className="v">{formatNumber(metrics?.accounts.active30d)}</p>
           </article>
 
           <article className="statCard">
-            <h3>Sign events (7d)</h3>
-            <p className="v">{formatNumber(metrics?.signEvents.last7d)}</p>
+            <h3>Sign events (30d)</h3>
+            <p className="v">{formatNumber(metrics?.signEvents.last30d)}</p>
           </article>
 
           <article className="statCard statCard--mint">

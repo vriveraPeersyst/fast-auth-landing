@@ -16,8 +16,9 @@ export type LiveMetrics = {
     new24h: number;
     active24h: number;
     active7d: number;
+    active30d?: number;
   };
-  signEvents: { last7d: number };
+  signEvents: { last7d: number; last30d?: number };
   relayers: { total: number };
   health24h: {
     uptimePct: number | null;

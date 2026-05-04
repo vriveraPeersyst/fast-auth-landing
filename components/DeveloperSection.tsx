@@ -6,10 +6,12 @@ import { ArrowRight, CheckIcon, GithubIcon } from "./icons";
 type Tab = "provider" | "hooks" | "interface";
 
 const SNIPPETS: Record<Tab, string> = {
-  provider: `import { FastAuthProvider, useFastAuth } from "@fast-auth-near/react-sdk";
+  provider: `import { FastAuthProvider } from "@fast-auth-near/react-sdk";
+import { JavascriptProvider } from "@fast-auth-near/javascript-provider";
 import { Connection } from "near-api-js";
-import { Auth0Provider } from "@fast-auth-near/auth0-provider";
 
+// Network is "mainnet" or "testnet" — the React SDK auto-configures the
+// MPC + FastAuth contract IDs from this single switch.
 const connection = new Connection({
   networkId: "mainnet",
   provider: { type: "JsonRpcProvider", args: { url: "https://rpc.mainnet.near.org" } },
@@ -17,10 +19,11 @@ const connection = new Connection({
 
 export default function App() {
   const providerConfig = {
-    provider: new Auth0Provider({
-      domain:   "login.fastauth.near.org",
+    // Auth0 tenant — Email · Google · Apple · Passkey are configured here.
+    provider: new JavascriptProvider({
+      domain:   "your-tenant.auth0.com",
       clientId: "YOUR_AUTH0_CLIENT_ID",
-      // Email · Google · Apple · Passkey are configured in your Auth0 tenant.
+      audience: "https://your-api.example.com",
     }),
   };
 
@@ -34,28 +37,28 @@ export default function App() {
     </FastAuthProvider>
   );
 }`,
-  hooks: `// Wallet.tsx — use the client + signer in any component
+  hooks: `// Wallet.tsx — sign in once, then send gas-free transactions.
 import { useFastAuth, useIsLoggedIn, useSigner } from "@fast-auth-near/react-sdk";
+import { buildDelegateAction } from "near-api-js/lib/transaction";
 
 export function Wallet() {
   const { client, isReady } = useFastAuth();
-  const isLoggedIn         = useIsLoggedIn();
-  const signer             = useSigner();
+  const { isLoggedIn }      = useIsLoggedIn();
+  const { signer }          = useSigner();
 
-  if (!isReady) return <p>Initializing…</p>;
+  if (!isReady || !client) return <p>Initializing…</p>;
+  if (!isLoggedIn)         return <button onClick={() => client.login()}>Sign in</button>;
 
-  if (!isLoggedIn) {
-    return <button onClick={() => client.login()}>Sign in</button>;
-  }
+  // Gas-free meta-transaction. Build the delegate action with near-api-js;
+  // the FastAuth relayer pays gas on behalf of the user.
+  const post = () => signer?.signAndSendDelegateAction({
+    receiverId:     "guest-book.near",
+    delegateAction: buildDelegateAction({ /* sender, actions, nonce, … */ }),
+    name:           "My dApp",
+    imageUrl:       "https://my-dapp.com/logo.png",
+  });
 
-  return (
-    <button onClick={() => signer.requestDelegateActionSignature({
-      receiverId: "guest-book.near",
-      actions: [{ type: "FunctionCall", method: "addMessage", args: { text: "gm" } }],
-    })}>
-      Post message
-    </button>
-  );
+  return <button onClick={post}>Post message · gas-free</button>;
 }`,
   interface: `// Provider interface — implement IFastAuthProvider yourself,
 // or pick one of the built-in providers (Auth0, custom backend).
@@ -126,8 +129,10 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
                 <div>
                   <strong>Drop in <code>FastAuthProvider</code>.</strong>
                   <span>
-                    Wrap your app once. The <code>useFastAuth</code> hook gives you a ready{" "}
-                    <code>client</code> with <code>login</code>, <code>logout</code>, and signing primitives.
+                    Wrap your app once. <code>useFastAuth</code> exposes the{" "}
+                    <code>client</code> for <code>login</code> / <code>logout</code>;{" "}
+                    <code>useSigner</code> exposes the signer for transactions and gas-free
+                    delegate actions.
                   </span>
                 </div>
               </li>
