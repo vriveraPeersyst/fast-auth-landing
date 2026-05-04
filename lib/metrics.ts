@@ -6,7 +6,13 @@
 export type LiveMetrics = {
   fetchedAt: string;
   accounts: {
+    // Combined total: indexed (accounts table) + migrated (legacy FastAuth
+    // pre-indexer cohort). Use this for headline numbers.
     total: number;
+    // Sub-totals so the UI can show the breakdown.
+    indexed: number;
+    migrated: number;
+    // Windowed metrics — indexed cohort only (migrated has no timestamps).
     new24h: number;
     active24h: number;
     active7d: number;
@@ -59,9 +65,15 @@ export async function fetchLiveMetrics(): Promise<LiveMetrics | null> {
       warnOnce(`metrics endpoint ${url} returned ${res.status}`);
       return null;
     }
-    const data = (await res.json()) as LiveMetrics;
-    if (typeof data?.accounts?.total !== "number") return null;
-    return data;
+    const data = (await res.json()) as Partial<LiveMetrics>;
+    if (
+      typeof data?.accounts?.total !== "number" ||
+      typeof data?.accounts?.indexed !== "number" ||
+      typeof data?.accounts?.migrated !== "number"
+    ) {
+      return null;
+    }
+    return data as LiveMetrics;
   } catch (error) {
     const cause = (error as { cause?: { code?: string } })?.cause;
     if (cause?.code === "ENOTFOUND" || cause?.code === "ECONNREFUSED") {

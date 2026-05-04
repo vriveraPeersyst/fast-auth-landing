@@ -38,7 +38,10 @@ export default function Stats({ metrics, statusHref }: Props) {
             <p className="v">{formatNumber(metrics?.accounts.total)}</p>
             <span className="delta">
               {metrics ? (
-                <>↑ {NUMBER_FMT.format(metrics.accounts.new24h)} new (24h)</>
+                <>
+                  {formatCompact(metrics.accounts.migrated)} migrated +{" "}
+                  {NUMBER_FMT.format(metrics.accounts.indexed)} indexed
+                </>
               ) : (
                 "—"
               )}
@@ -93,6 +96,16 @@ export default function Stats({ metrics, statusHref }: Props) {
 function formatNumber(value: number | undefined | null): string {
   if (typeof value !== "number" || !Number.isFinite(value)) return "—";
   return NUMBER_FMT.format(value);
+}
+
+const COMPACT_FMT = new Intl.NumberFormat("en-US", {
+  notation: "compact",
+  maximumFractionDigits: 2,
+});
+
+function formatCompact(value: number | undefined | null): string {
+  if (typeof value !== "number" || !Number.isFinite(value)) return "—";
+  return COMPACT_FMT.format(value);
 }
 
 function formatUptime(pct: number | null): string {

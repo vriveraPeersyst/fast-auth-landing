@@ -1,16 +1,31 @@
+import type { LiveMetrics } from "@/lib/metrics";
 import { ArrowRight } from "./icons";
 import PhoneHero from "./PhoneHero";
 
-type Props = { docsHref: string; statusHref: string };
+type Props = {
+  docsHref: string;
+  statusHref: string;
+  metrics: LiveMetrics | null;
+};
 
-export default function Hero({ docsHref, statusHref }: Props) {
+const COMPACT = new Intl.NumberFormat("en-US", {
+  notation: "compact",
+  maximumFractionDigits: 2,
+});
+
+export default function Hero({ docsHref, statusHref, metrics }: Props) {
+  const accountsLabel =
+    metrics && Number.isFinite(metrics.accounts.total) && metrics.accounts.total > 0
+      ? `${COMPACT.format(metrics.accounts.total)}+ ACCOUNTS`
+      : "9M+ ACCOUNTS";
+
   return (
     <section className="hero">
       <div className="container heroGrid">
         <div className="heroCopy">
           <span className="heroKicker">
             <span className="kdot" />
-            FASTAUTH · LIVE ON NEAR MAINNET · 9M+ ACCOUNTS
+            FASTAUTH · LIVE ON NEAR MAINNET · {accountsLabel}
           </span>
           <h1 className="heroTitle">
             One login. <span className="accent">Every dApp</span> on NEAR.

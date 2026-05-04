@@ -60,7 +60,7 @@ Google Analytics (`G-9HVGE9PZ10`) is wired up in `app/layout.tsx` via `next/scri
 The page links out to two URLs declared at the top of `app/page.tsx`:
 
 - `DOCS_HREF` → https://peersyst.github.io/fast-auth/
-- `STATUS_HREF` → https://fastauth.peersyst.org/status
+- `STATUS_HREF` → https://fast-auth-metrics-dashboard.vercel.app/
 
 Update them there if either moves.
 

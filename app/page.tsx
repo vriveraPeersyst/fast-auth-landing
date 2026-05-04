@@ -10,7 +10,7 @@ import SiteFooter from "@/components/SiteFooter";
 import { fetchLiveMetrics } from "@/lib/metrics";
 
 const DOCS_HREF = "https://peersyst.github.io/fast-auth/";
-const STATUS_HREF = "https://fastauth.peersyst.org/status";
+const STATUS_HREF = "https://fast-auth-metrics-dashboard.vercel.app/";
 
 export const revalidate = 60;
 
@@ -20,7 +20,7 @@ export default async function Page() {
   return (
     <>
       <Header docsHref={DOCS_HREF} statusHref={STATUS_HREF} />
-      <Hero docsHref={DOCS_HREF} statusHref={STATUS_HREF} />
+      <Hero docsHref={DOCS_HREF} statusHref={STATUS_HREF} metrics={metrics} />
       <WhatIsFastAuth />
       <HowItWorks />
       <DeveloperSection docsHref={DOCS_HREF} />
