@@ -28,7 +28,8 @@ export default function Hero({ docsHref, statusHref, metrics }: Props) {
             FASTAUTH · LIVE ON NEAR MAINNET · {accountsLabel}
           </span>
           <h1 className="heroTitle">
-            One login. <span className="accent">Every dApp</span> on NEAR.
+            Onboard users with an <span className="accent">email</span>.{" "}
+            Give them a <span className="accent">real wallet</span>.
           </h1>
           <p className="heroLede">
             FastAuth onboards users in seconds with any Auth0 method — email, social, passkey, or enterprise SSO — no seed phrases, no extensions, no wallet popups.

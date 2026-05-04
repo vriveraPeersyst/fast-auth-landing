@@ -3,35 +3,27 @@
 import { useState } from "react";
 import { ArrowRight, CheckIcon, GithubIcon } from "./icons";
 
-type Tab = "react" | "browser" | "install";
+type Tab = "provider" | "hooks" | "interface";
 
 const SNIPPETS: Record<Tab, string> = {
-  react: `import {
-  FastAuthProvider,
-  useFastAuth,
-  useIsLoggedIn,
-  useSigner,
-} from "@fast-auth-near/react-sdk";
-import { JavascriptProvider } from "@fast-auth-near/javascript-provider";
+  provider: `import { FastAuthProvider, useFastAuth } from "@fast-auth-near/react-sdk";
 import { Connection } from "near-api-js";
+import { Auth0Provider } from "@fast-auth-near/auth0-provider";
 
 const connection = new Connection({
   networkId: "mainnet",
-  provider: {
-    type: "JsonRpcProvider",
-    args: { url: "https://rpc.mainnet.near.org" },
-  },
+  provider: { type: "JsonRpcProvider", args: { url: "https://rpc.mainnet.near.org" } },
 });
 
-const providerConfig = {
-  provider: new JavascriptProvider({
-    domain: "your-tenant.auth0.com",
-    clientId: "your-client-id",
-    audience: "https://your-api.example.com",
-  }),
-};
-
 export default function App() {
+  const providerConfig = {
+    provider: new Auth0Provider({
+      domain:   "login.fastauth.near.org",
+      clientId: "YOUR_AUTH0_CLIENT_ID",
+      // Email · Google · Apple · Passkey are configured in your Auth0 tenant.
+    }),
+  };
+
   return (
     <FastAuthProvider
       providerConfig={providerConfig}
@@ -41,96 +33,70 @@ export default function App() {
       <Wallet />
     </FastAuthProvider>
   );
-}
+}`,
+  hooks: `// Wallet.tsx — use the client + signer in any component
+import { useFastAuth, useIsLoggedIn, useSigner } from "@fast-auth-near/react-sdk";
 
-function Wallet() {
+export function Wallet() {
   const { client, isReady } = useFastAuth();
-  const { isLoggedIn } = useIsLoggedIn();
-  const { signer } = useSigner();
+  const isLoggedIn         = useIsLoggedIn();
+  const signer             = useSigner();
 
-  if (!isReady || !client) return <p>Initializing…</p>;
-  if (!isLoggedIn) return <button onClick={() => client.login()}>Sign in</button>;
+  if (!isReady) return <p>Initializing…</p>;
+
+  if (!isLoggedIn) {
+    return <button onClick={() => client.login()}>Sign in</button>;
+  }
 
   return (
-    <button onClick={() => signer?.signAndSendTransaction({ transaction })}>
-      Send transaction
+    <button onClick={() => signer.requestDelegateActionSignature({
+      receiverId: "guest-book.near",
+      actions: [{ type: "FunctionCall", method: "addMessage", args: { text: "gm" } }],
+    })}>
+      Post message
     </button>
   );
 }`,
-  browser: `import { FastAuthClient } from "@fast-auth-near/browser-sdk";
-import { JavascriptProvider } from "@fast-auth-near/javascript-provider";
-import { connect } from "near-api-js";
+  interface: `// Provider interface — implement IFastAuthProvider yourself,
+// or pick one of the built-in providers (Auth0, custom backend).
 
-// 1. Auth0-backed FastAuth provider
-const provider = new JavascriptProvider({
-  domain: "your-tenant.auth0.com",
-  clientId: "your-client-id",
-  audience: "https://your-api.example.com",
-});
+interface IFastAuthProvider {
+  // Authentication
+  login(...args: any[]): void;
+  logout(): void;
+  isLoggedIn(): Promise<boolean>;
 
-// 2. NEAR connection
-const { connection } = await connect({
-  networkId: "mainnet",
-  nodeUrl: "https://rpc.mainnet.near.org",
-});
+  // Signing
+  requestTransactionSignature(...args: any[]): Promise<void>;
+  requestDelegateActionSignature(...args: any[]): Promise<void>;
 
-// 3. FastAuth client
-const client = new FastAuthClient(provider, connection, {
-  mpcContractId:      "v1.signer-prod.testnet",
-  fastAuthContractId: "fast-auth-beta-001.testnet",
-});
+  // Utilities
+  getSignatureRequest(): Promise<SignatureRequest>;
+  getPath(): Promise<string>;
+}
 
-// Sign in (popup by default; pass redirectUri for redirect flow)
-await client.login();
-
-if (await client.isLoggedIn()) {
-  const signer    = await client.getSigner();
-  const publicKey = await signer.getPublicKey();
-
-  // Gasless meta-transaction via the FastAuth relayer
-  await signer.signAndSendDelegateAction({
-    receiverId: "guest-book.near",
-    name:       "My dApp",
-    imageUrl:   "https://my-dapp.com/logo.png",
-  });
-}`,
-  install: `# React SDK (Auth0 + NEAR)
-pnpm add \\
-  @fast-auth-near/react-sdk \\
-  @fast-auth-near/javascript-provider \\
-  near-api-js
-
-# Or vanilla JS / TS
-pnpm add \\
-  @fast-auth-near/browser-sdk \\
-  @fast-auth-near/javascript-provider \\
-  near-api-js
-
-# Sign in:
-#   await client.login()
-#
-# Sign + relay (gasless):
-#   const signer = await client.getSigner()
-#   await signer.signAndSendDelegateAction({ receiverId, name, imageUrl })
-#
-# Docs:    https://peersyst.github.io/fast-auth/
-# GitHub:  https://github.com/peersyst/fast-auth`,
+type SignatureRequest = {
+  guardId:       string;        // guard contract identifier
+  verifyPayload: string;        // JWT or verification data
+  signPayload:   Uint8Array;    // transaction bytes to sign
+  algorithm?:    "secp256k1" | "eddsa" | "ecdsa";
+};`,
 };
 
 const TAB_FILE: Record<Tab, string> = {
-  react: "App.tsx",
-  browser: "main.ts",
-  install: "shell",
+  provider: "App.tsx",
+  hooks: "Wallet.tsx",
+  interface: "types.ts",
 };
 
 const TAB_LABEL: Record<Tab, string> = {
-  react: "React",
-  browser: "Browser",
-  install: "Install",
+  provider: "Provider",
+  hooks: "Hooks",
+  interface: "Interface",
 };
 
 export default function DeveloperSection({ docsHref }: { docsHref: string }) {
-  const [tab, setTab] = useState<Tab>("react");
+  const [tab, setTab] = useState<Tab>("provider");
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -158,27 +124,28 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
               <li>
                 <span className="checkbox"><CheckIcon /></span>
                 <div>
-                  <strong>One provider, three React hooks.</strong>
+                  <strong>Drop in <code>FastAuthProvider</code>.</strong>
                   <span>
-                    <code>useFastAuth</code>, <code>useIsLoggedIn</code>, and{" "}
-                    <code>useSigner</code> cover login state, session checks, and signing.
+                    Wrap your app once. The <code>useFastAuth</code> hook gives you a ready{" "}
+                    <code>client</code> with <code>login</code>, <code>logout</code>, and signing primitives.
                   </span>
                 </div>
               </li>
               <li>
                 <span className="checkbox"><CheckIcon /></span>
                 <div>
-                  <strong>Every Auth0 sign-in method, one identity.</strong>
-                  <span>Email/password, passwordless, passkeys, social (Google, Apple, custom OAuth2), and enterprise SSO — all routed through Auth0. The same identity resolves to the same NEAR account across every FastAuth-integrated dApp.</span>
+                  <strong>Four sign-in methods. One identity.</strong>
+                  <span>
+                    Email, Google, Apple, or passkey — routed through Auth0. The same login resolves to the same NEAR account in every dApp on FastAuth.
+                  </span>
                 </div>
               </li>
               <li>
                 <span className="checkbox"><CheckIcon /></span>
                 <div>
-                  <strong>Gasless via the relayer.</strong>
+                  <strong>Browser, React, JS, React Native.</strong>
                   <span>
-                    <code>signAndSendDelegateAction</code> wraps user-signed actions as
-                    meta-transactions and pays gas through the FastAuth relayer.
+                    Pick the SDK or provider that matches your stack. Same client, same account model, same signature flow.
                   </span>
                 </div>
               </li>
@@ -186,7 +153,9 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
                 <span className="checkbox"><CheckIcon /></span>
                 <div>
                   <strong>Open source. Self-hostable.</strong>
-                  <span>MIT-licensed. Run the relayer, recovery service, and account-creation contract on your own infra.</span>
+                  <span>
+                    MIT-licensed on GitHub. Run the entire stack on your own infrastructure if you'd rather not depend on ours.
+                  </span>
                 </div>
               </li>
             </ul>
@@ -210,7 +179,7 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
               </button>
             </div>
             <div className="codeTabs">
-              {(["react", "browser", "install"] as Tab[]).map((t) => (
+              {(["provider", "hooks", "interface"] as Tab[]).map((t) => (
                 <button
                   key={t}
                   className={"codeTab " + (tab === t ? "active" : "")}
@@ -221,7 +190,7 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
               ))}
             </div>
             <pre className="code">
-              <code dangerouslySetInnerHTML={{ __html: highlight(SNIPPETS[tab], tab) }} />
+              <code dangerouslySetInnerHTML={{ __html: highlight(SNIPPETS[tab]) }} />
             </pre>
           </div>
         </div>
@@ -230,23 +199,14 @@ export default function DeveloperSection({ docsHref }: { docsHref: string }) {
   );
 }
 
-function highlight(src: string, lang: Tab): string {
+// All three tabs are TypeScript-ish now — same highlighter for each.
+function highlight(src: string): string {
   let s = src.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-  if (lang === "install") {
-    s = s.replace(/^(#.*)$/gm, '<span class="tk-c">$1</span>');
-    s = s.replace(/\b(pnpm|npm|npx|yarn|fastauth)\b/g, '<span class="tk-f">$1</span>');
-    s = s.replace(/(--[\w-]+)/g, '<span class="tk-k">$1</span>');
-    s = s.replace(/\b(\d+)\b/g, '<span class="tk-n">$1</span>');
-    return s;
-  }
-
-  // react / browser — JS/TS/JSX
   s = s.replace(/(\/\/[^\n]*)/g, '<span class="tk-c">$1</span>');
   s = s.replace(/(&quot;[^&]*?&quot;)/g, '<span class="tk-s">$1</span>');
   s = s.replace(
-    /\b(import|from|export|default|function|return|const|let|if|else|new|await|async)\b/g,
-    '<span class="tk-k">$1</span>'
+    /\b(import|from|export|default|function|return|const|let|if|else|new|interface|type|extends)\b/g,
+    '<span class="tk-k">$1</span>',
   );
   s = s.replace(/\b(\d+)\b/g, '<span class="tk-n">$1</span>');
   return s;
