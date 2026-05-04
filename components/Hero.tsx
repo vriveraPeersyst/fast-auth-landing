@@ -6,7 +6,9 @@ type Props = {
   docsHref: string;
   statusHref: string;
   auditHref: string;
-  metrics: LiveMetrics | null;
+  // Optional: when present, the kicker shows the live total accounts;
+  // otherwise it falls back to the static "10M+ ACCOUNTS" copy.
+  metrics?: LiveMetrics | null;
 };
 
 const COMPACT_MILLIONS = new Intl.NumberFormat("en-US", {
