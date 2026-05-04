@@ -2,7 +2,17 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fastauth.peersyst.org";
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit;
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (vercelProd) return `https://${vercelProd}`;
+  const vercelUrl = process.env.VERCEL_URL;
+  if (vercelUrl) return `https://${vercelUrl}`;
+  return "https://fast-auth-landing.vercel.app";
+}
+
+const SITE_URL = resolveSiteUrl();
 const SITE_TITLE = "FastAuth — Sign up with email. Own a real wallet.";
 const SITE_DESCRIPTION =
   "FastAuth onboards users in seconds with any Auth0 method — email, social, passkey, or enterprise SSO — no seed phrases, no extensions, no wallet popups. One Auth0-backed identity, shared across every wallet and dApp in the NEAR ecosystem.";
