@@ -45,7 +45,8 @@ The page is composed top-to-bottom in `app/page.tsx` from the section components
 
 `lib/metrics.ts` fetches public network metrics server-side and feeds them into the Stats section. The endpoint defaults to `https://fastauth-metrics.peersyst.org/api/public/metrics` and is re-validated every 60s. If the request fails, the Stats section renders placeholders instead of crashing the page.
 
-Override the endpoint with:
+In production the endpoint defaults to `https://fastauth-metrics.peersyst.org/api/public/metrics`.
+Override it with:
 
 ```bash
 FASTAUTH_METRICS_URL=https://your-metrics-host/api/public/metrics
@@ -60,7 +61,7 @@ Google Analytics (`G-9HVGE9PZ10`) is wired up in `app/layout.tsx` via `next/scri
 The page links out to two URLs declared at the top of `app/page.tsx`:
 
 - `DOCS_HREF` → https://peersyst.github.io/fast-auth/
-- `STATUS_HREF` → https://fast-auth-metrics-dashboard.vercel.app/
+- `STATUS_HREF` → /status
 
 Update them there if either moves.
 
