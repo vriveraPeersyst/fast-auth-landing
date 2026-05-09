@@ -168,7 +168,7 @@ export type StatusData = {
   missingRanges: StatusMissingRange[];
 };
 
-const DEFAULT_STATUS_URL = "https://fastauth-metrics.peersyst.org/api/public/status";
+const DEFAULT_STATUS_URL = "https://fast-auth-indexer-api-api-production.up.railway.app/api/public/status";
 
 function resolveStatusUrl(): string | null {
   const fromEnv = process.env.FASTAUTH_STATUS_URL?.trim();
