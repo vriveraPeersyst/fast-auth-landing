@@ -168,6 +168,8 @@ export type StatusData = {
   missingRanges: StatusMissingRange[];
 };
 
+const DEFAULT_STATUS_URL = "https://fast-auth-indexer-api-api-production.up.railway.app/api/public/status";
+
 function resolveStatusUrl(): string | null {
   const fromEnv = process.env.FASTAUTH_STATUS_URL?.trim();
   if (fromEnv) return fromEnv;
@@ -187,7 +189,7 @@ function resolveStatusUrl(): string | null {
   if (process.env.NODE_ENV !== "production") {
     return "http://localhost:3000/api/public/status";
   }
-  return null;
+  return DEFAULT_STATUS_URL;
 }
 
 let lastWarnAt = 0;

@@ -28,16 +28,18 @@ export type LiveMetrics = {
   };
 };
 
+const DEFAULT_METRICS_URL = "https://fast-auth-indexer-api-api-production.up.railway.app/api/public/metrics";
+
 function resolveUrl(): string | null {
   const fromEnv = process.env.FASTAUTH_METRICS_URL?.trim();
   if (fromEnv) return fromEnv;
-  // Dev convenience: dashboard typically runs on :3000 alongside this landing
-  // on :3001. In production we require an explicit URL — return null so
-  // fetchLiveMetrics short-circuits without trying to resolve a placeholder.
+
+  // Dev defaults to the dashboard running alongside this app; production falls
+  // back to the Peersyst-hosted public dashboard unless explicitly overridden.
   if (process.env.NODE_ENV !== "production") {
     return "http://localhost:3000/api/public/metrics";
   }
-  return null;
+  return DEFAULT_METRICS_URL;
 }
 
 // Throttle warnings so a long-running dev session with the dashboard offline
