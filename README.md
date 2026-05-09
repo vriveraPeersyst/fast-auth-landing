@@ -45,8 +45,7 @@ The page is composed top-to-bottom in `app/page.tsx` from the section components
 
 `lib/metrics.ts` fetches public network metrics server-side and feeds them into the Stats section. The endpoint defaults to `https://fast-auth-indexer-api-api-production.up.railway.app/api/public/metrics` and is re-validated every 60s. If the request fails, the Stats section renders placeholders instead of crashing the page.
 
-In production the endpoint defaults to `https://fast-auth-indexer-api-api-production.up.railway.app/api/public/metrics`.
-Override it with:
+Override the endpoint with:
 
 ```bash
 FASTAUTH_METRICS_URL=https://your-metrics-host/api/public/metrics
